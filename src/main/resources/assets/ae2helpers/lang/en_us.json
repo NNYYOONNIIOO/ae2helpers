@@ -1,0 +1,13 @@
+{
+  "itemGroup.ae2helpers": "Example Mod Tab",
+  "block.ae2helpers.example_block": "Example Block",
+  "item.ae2helpers.example_item": "Example Item",
+
+  "ae2helpers.configuration.title": "ae2helpers Configs",
+  "ae2helpers.configuration.section.ae2helpers.common.toml": "ae2helpers Configs",
+  "ae2helpers.configuration.section.ae2helpers.common.toml.title": "ae2helpers Configs",
+  "ae2helpers.configuration.items": "Item List",
+  "ae2helpers.configuration.logDirtBlock": "Log Dirt Block",
+  "ae2helpers.configuration.magicNumberIntroduction": "Magic Number Text",
+  "ae2helpers.configuration.magicNumber": "Magic Number"
+}
