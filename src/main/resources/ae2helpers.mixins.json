@@ -3,12 +3,16 @@
   "package": "rearth.ae2helpers.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "PatternProviderImportMixin"
+    "PatternProviderImportMixin",
+    "PatternProviderMenuMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "overwrites": {
     "requireAnnotations": true
-  }
+  },
+  "client": [
+    "PatternProviderScreenMixin"
+  ]
 }
