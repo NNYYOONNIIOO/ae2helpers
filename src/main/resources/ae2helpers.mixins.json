@@ -2,7 +2,9 @@
   "required": true,
   "package": "rearth.ae2helpers.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "mixins": [
+    "PatternProviderImportMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   },
