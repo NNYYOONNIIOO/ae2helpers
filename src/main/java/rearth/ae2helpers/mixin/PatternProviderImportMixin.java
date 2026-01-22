@@ -75,6 +75,7 @@ public abstract class PatternProviderImportMixin {
     // Checks all expected results, and lowers/removes them if there's no craft pending that needs them (e.g. cancelled / missed)
     @Unique
     private void ae2helpers$syncWithCraftingService() {
+        ae2helpers.LOGGER.info("Syncing to crafter");
         var grid = this.mainNode.getGrid();
         if (grid == null) return;
         
@@ -104,6 +105,7 @@ public abstract class PatternProviderImportMixin {
     
     @Inject(method = "doWork", at = @At("RETURN"), cancellable = true)
     private void ae2helpers$onDoWork(CallbackInfoReturnable<Boolean> cir) {
+        ae2helpers.LOGGER.info("Doing work");
         if (!this.mainNode.isActive()) return;
         
         // Stop if we aren't expecting anything
