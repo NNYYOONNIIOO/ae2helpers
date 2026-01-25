@@ -14,7 +14,18 @@ import rearth.ae2helpers.client.AutoCraftingWatcher;
 @Mixin(MEStorageScreen.class)
 public class MEStorageScreenMixin {
     
-    // todo
+//    @Inject(method = "init", at = @At("HEAD"))
+//    private void onInit(CallbackInfo ci) {
+//        var screen = (MEStorageScreen<?>) (Object) this;
+//
+//        if (screen.getMenu() instanceof MEStorageMenu menu) {
+//            if (!menu.isReturnedFromSubScreen()) {
+//                AutoCraftingWatcher.INSTANCE.clear();
+//            }
+//        } else {
+//            AutoCraftingWatcher.INSTANCE.clear();
+//        }
+//    }
     
     @Inject(method = "containerTick", at = @At("RETURN"))
     private void onContainerTick(CallbackInfo ci) {

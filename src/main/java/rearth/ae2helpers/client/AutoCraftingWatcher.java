@@ -2,8 +2,10 @@ package rearth.ae2helpers.client;
 
 import appeng.api.stacks.AEKey;
 import appeng.client.gui.me.common.MEStorageScreen;
+import appeng.menu.SlotSemantics;
 import appeng.menu.me.items.CraftingTermMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.inventory.Slot;
@@ -24,7 +26,10 @@ public class AutoCraftingWatcher {
     
     // crafting slot index (0-9) to ingredient being crafted / waiting
     private final Map<Integer, Ingredient> pendingSlots = new HashMap<>();
+    
     private boolean active = false;
+    private int startDelay = 0;
+    private int craftingSlotsOffset = 0;
     
     
     public void setPending(Map<Integer, Ingredient> recipeMap, Set<Integer> slotsToWatch) {
@@ -35,12 +40,18 @@ public class AutoCraftingWatcher {
                 this.pendingSlots.put(slotIndex, ing);
             }
         }
-        this.active = !this.pendingSlots.isEmpty();
+        
+        if (!this.pendingSlots.isEmpty()) {
+            startDelay = 15;
+            active = true;
+        }
     }
     
     public void clear() {
         this.pendingSlots.clear();
         this.active = false;
+        this.startDelay = 0;
+        ae2helpers.LOGGER.info("Cleared screen");
     }
     
     public void onTick(MEStorageScreen<?> screen) {
@@ -51,8 +62,18 @@ public class AutoCraftingWatcher {
             return;
         }
         
+        var craftingSlots = menu.getSlots(SlotSemantics.CRAFTING_GRID);
+        craftingSlotsOffset = craftingSlots.getFirst().index;
+        
+        if (startDelay > 0) {
+            startDelay--;
+            ae2helpers.LOGGER.info("Skipping " + startDelay);
+            return; // Wait for AE2 to finish its native moves
+        }
+        
         var repo = menu.getClientRepo();
         if (repo == null) return;
+        
         
         var it = pendingSlots.entrySet().iterator();
         while (it.hasNext()) {
@@ -60,8 +81,10 @@ public class AutoCraftingWatcher {
             int slotIndex = entry.getKey();
             Ingredient ingredient = entry.getValue();
             
+            ae2helpers.LOGGER.info("Trying to fill slot: " + slotIndex + " with: " + ingredient.getItems()[0]);
+            
             // if slot has been filled otherwise (e.g. by user)
-            if (menu.getSlot(slotIndex).hasItem()) {
+            if (craftingSlots.get(slotIndex).hasItem()) {
                 it.remove();
                 continue;
             }
@@ -88,6 +111,10 @@ public class AutoCraftingWatcher {
                 
                 // Stop watching this slot locally (server will fill it shortly)
                 it.remove();
+                
+                // stop to avoid trying to put the same item into multiple slots
+                startDelay = 5;
+                break;
             }
         }
         
@@ -98,11 +125,11 @@ public class AutoCraftingWatcher {
     
     
     public void renderGhosts(GuiGraphics guiGraphics, Slot slot) {
-        if (!active || !pendingSlots.containsKey(slot.index)) return;
+        if (!active || !pendingSlots.containsKey(slot.index - craftingSlotsOffset)) return;
         
         if (slot.hasItem()) return;
         
-        Ingredient ingredient = pendingSlots.get(slot.index);
+        Ingredient ingredient = pendingSlots.get(slot.index - craftingSlotsOffset);
         ItemStack[] stacks = ingredient.getItems();
         if (stacks.length == 0) return;
         
@@ -112,15 +139,55 @@ public class AutoCraftingWatcher {
         
         // Render Ghost Logic
         guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(0, 0, 100); // Draw on top of slot
+        guiGraphics.pose().translate(0, 0, 50);
         
         // 1. Render the item
-        guiGraphics.renderItem(stackToRender, slot.x, slot.y);
+        guiGraphics.renderFakeItem(stackToRender, slot.x, slot.y);
         
-        // 2. Render a semi-transparent gray overlay to make it look "ghostly"
-//        RenderSystem.disableDepthTest();
-//        guiGraphics.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, 0x608B8B8B);
-//        RenderSystem.enableDepthTest();
+        guiGraphics.pose().pushPose();
+        
+        guiGraphics.pose().translate(0, 0, 250); // Draw on top of slot
+        
+        RenderSystem.disableDepthTest();
+        guiGraphics.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, 0x608B8B8B);
+        RenderSystem.enableDepthTest();
+        
+        drawSpinner(guiGraphics, slot.x + 8, slot.y + 8);
+        
+        guiGraphics.pose().popPose();
+        
+        guiGraphics.pose().popPose();
+    }
+    
+    private void drawSpinner(GuiGraphics guiGraphics, int x, int y) {
+        long millis = System.currentTimeMillis();
+        // Rotation speed: one full turn every 1000ms
+        float angle = (millis % 1000) / 1000f * 360f;
+        
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(x, y, 0);
+        guiGraphics.pose().mulPose(Axis.ZP.rotationDegrees(angle));
+        
+        // Draw 6 dots in a circle
+        int dots = 6;
+        int radius = 5;
+        int color = 0xFFFFFFFF; // White
+        
+        for (int i = 0; i < dots; i++) {
+            // Calculate alpha to create a "fade trail" effect
+            // The leading dot is opaque, trailing dots fade out
+            int alpha = 255 - (i * (200 / dots));
+            int dotColor = (alpha << 24) | (color & 0x00FFFFFF);
+            
+            // Position based on fixed circle, but we rotate the whole pose so simple math works
+            double rad = Math.toRadians((360f / dots) * i);
+            int dx = (int) (Math.cos(rad) * radius);
+            int dy = (int) (Math.sin(rad) * radius);
+            
+            // Draw a small 2x2 or 1.5x1.5 dot
+            // We use -1 offsets to center the dot on the calculated point
+            guiGraphics.fill(dx - 1, dy - 1, dx + 1, dy + 1, dotColor);
+        }
         
         guiGraphics.pose().popPose();
     }
