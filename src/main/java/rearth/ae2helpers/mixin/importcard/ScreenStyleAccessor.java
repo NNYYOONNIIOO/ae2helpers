@@ -1,4 +1,4 @@
-package rearth.ae2helpers.mixin;
+package rearth.ae2helpers.mixin.importcard;
 
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.WidgetStyle;

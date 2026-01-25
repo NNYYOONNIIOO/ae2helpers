@@ -20,9 +20,12 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
+import rearth.ae2helpers.network.FillCraftingSlotPacket;
 
 @Mod(ae2helpers.MODID)
 public class ae2helpers {
@@ -49,7 +52,8 @@ public class ae2helpers {
         NeoForge.EVENT_BUS.register(this);
         
         modEventBus.addListener(this::injectToAETab);
-
+        modEventBus.addListener(this::registerPayloads);
+        
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
@@ -74,6 +78,16 @@ public class ae2helpers {
         if (event.getTabKey() == AECreativeTabIds.MAIN) {
             event.accept(RESULT_IMPORT_CARD);
         }
+    }
+    
+    private void registerPayloads(final RegisterPayloadHandlersEvent event) {
+        final var registrar = event.registrar("1");
+        
+        registrar.playToServer(
+          FillCraftingSlotPacket.TYPE,
+          FillCraftingSlotPacket.STREAM_CODEC,
+          FillCraftingSlotPacket::handle
+        );
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

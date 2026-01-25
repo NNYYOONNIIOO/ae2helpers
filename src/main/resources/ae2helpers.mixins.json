@@ -3,9 +3,10 @@
   "package": "rearth.ae2helpers.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "PatternProviderImportMixin",
-    "PatternProviderMenuMixin",
-    "ScreenStyleAccessor"
+    "crafter.CraftingHelperMixin",
+    "importcard.PatternProviderImportMixin",
+    "importcard.PatternProviderMenuMixin",
+    "importcard.ScreenStyleAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
@@ -14,6 +15,7 @@
     "requireAnnotations": true
   },
   "client": [
-    "PatternProviderScreenMixin"
+    "crafter.MEStorageScreenMixin",
+    "importcard.PatternProviderScreenMixin"
   ]
 }

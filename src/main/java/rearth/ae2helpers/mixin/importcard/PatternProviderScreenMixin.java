@@ -1,4 +1,4 @@
-package rearth.ae2helpers.mixin;
+package rearth.ae2helpers.mixin.importcard;
 
 import appeng.api.upgrades.Upgrades;
 import appeng.blockentity.crafting.PatternProviderBlockEntity;
@@ -8,7 +8,6 @@ import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.WidgetStyle;
 import appeng.client.gui.widgets.UpgradesPanel;
 import appeng.core.localization.GuiText;
-import appeng.menu.SlotSemantics;
 import appeng.menu.implementations.PatternProviderMenu;
 import appeng.parts.crafting.PatternProviderPart;
 import net.minecraft.network.chat.Component;

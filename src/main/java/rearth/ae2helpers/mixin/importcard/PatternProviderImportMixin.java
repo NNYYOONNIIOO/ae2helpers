@@ -1,4 +1,4 @@
-package rearth.ae2helpers.mixin;
+package rearth.ae2helpers.mixin.importcard;
 
 import appeng.api.behaviors.StackImportStrategy;
 import appeng.api.crafting.IPatternDetails;
@@ -75,6 +75,9 @@ public abstract class PatternProviderImportMixin implements IPatternProviderUpgr
     private void initUpgrade(IManagedGridNode mainNode, PatternProviderLogicHost host, int patternInventorySize, CallbackInfo ci) {
         this.ae2helpers$upgradeSlots = UpgradeInventories.forMachine(ae2helpers.RESULT_IMPORT_CARD, 1, this::saveChanges);
     }
+    
+    // todo disable autocrafter sync by default (toggleable by config)
+    // todo add timeout
     
     @Inject(method = "pushPattern", at = @At("RETURN"))
     private void ae2helpers$onPushPattern(IPatternDetails patternDetails, KeyCounter[] inputHolder, CallbackInfoReturnable<Boolean> cir) {
