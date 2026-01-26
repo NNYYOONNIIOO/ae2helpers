@@ -1,7 +1,5 @@
 {
-  "itemGroup.ae2helpers": "Example Mod Tab",
-  "block.ae2helpers.example_block": "Example Block",
-  "item.ae2helpers.example_item": "Example Item",
+  "item.ae2helpers.result_import_card": "Crafting Result Import Card",
 
   "ae2helpers.configuration.title": "ae2helpers Configs",
   "ae2helpers.configuration.section.ae2helpers.common.toml": "ae2helpers Configs",
@@ -11,6 +9,7 @@
   "ae2helpers.configuration.magicNumberIntroduction": "Magic Number Text",
   "ae2helpers.configuration.magicNumber": "Magic Number",
 
+  "ae2helpers.importcard.pattern": "ME Pattern Provider (Sided Only)",
   "ae2helpers.importcard.screen.title": "Import Card Configuration",
   "ae2helpers.importcard.resultsonly": "Import Crafting Results Only",
   "ae2helpers.importcard.resultsonly.tooltip": "If enabled, only imports items that are expected outputs of the current crafting pattern.\nIf disabled, imports everything from the target machine.",

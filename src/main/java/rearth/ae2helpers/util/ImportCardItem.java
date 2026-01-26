@@ -1,5 +1,6 @@
 package rearth.ae2helpers.util;
 
+import appeng.core.localization.ButtonToolTips;
 import appeng.items.materials.UpgradeCardItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -39,7 +40,11 @@ public class ImportCardItem extends UpgradeCardItem {
     
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+        
+        tooltipComponents.add(ButtonToolTips.SupportedBy.text());
+        tooltipComponents.add(Component.translatable("ae2helpers.importcard.pattern").withStyle(ChatFormatting.GRAY));
+        
+        tooltipComponents.add(Component.literal(""));
         
         var config = stack.getOrDefault(ae2helpers.IMPORT_CARD_CONFIG.get(), ImportCardConfig.DEFAULT);
         
