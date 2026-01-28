@@ -33,16 +33,13 @@ public abstract class PatternProviderMenuMixin extends AEBaseMenu {
       method = "<init>(Lnet/minecraft/world/inventory/MenuType;ILnet/minecraft/world/entity/player/Inventory;Lappeng/helpers/patternprovider/PatternProviderLogicHost;)V",
       at = @At("TAIL")
     )
-    private void initUpgrades(MenuType<?> menuType, int id, Inventory playerInventory, PatternProviderLogicHost host, CallbackInfo ci) {
+    private void ae2extras$initUpgrades(MenuType<?> menuType, int id, Inventory playerInventory, PatternProviderLogicHost host, CallbackInfo ci) {
         if (this.logic instanceof IPatternProviderUpgradeHost upgradeHost) {
-            
             
             ae2helpers$createUpgradeSlots(upgradeHost.ae2helpers$getUpgradeInventory());
             
             // could be this but that breaks with extendedae
             // this.setupUpgrades(upgradeHost.ae2helpers$getUpgradeInventory());
-            
-            
         }
     }
     

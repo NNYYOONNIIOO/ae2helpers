@@ -18,27 +18,27 @@ import rearth.ae2helpers.client.AutoInsertButton;
 public abstract class MEStorageScreenMixin<C extends MEStorageMenu> {
     
     @Inject(method = "containerTick", at = @At("RETURN"))
-    private void onContainerTick(CallbackInfo ci) {
+    private void ae2extras$onContainerTick(CallbackInfo ci) {
         MEStorageScreen<?> screen = (MEStorageScreen<?>) (Object) this;
         AutoCraftingWatcher.INSTANCE.onTick(screen);
     }
     
     @Inject(method = "removed", at = @At("HEAD"))
-    private void onRemoved(CallbackInfo ci) {
+    private void ae2extras$onRemoved(CallbackInfo ci) {
         AutoCraftingWatcher.INSTANCE.onScreenRemoved();
     }
     
     @Inject(method = "renderSlot", at = @At("HEAD"))
-    private void onRenderSlot(GuiGraphics guiGraphics, Slot slot, CallbackInfo ci) {
+    private void ae2extras$onRenderSlot(GuiGraphics guiGraphics, Slot slot, CallbackInfo ci) {
         AutoCraftingWatcher.INSTANCE.renderGhosts(guiGraphics, slot);
     }
     
     @Inject(method = "<init>(Lappeng/menu/me/common/MEStorageMenu;Lnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/network/chat/Component;Lappeng/client/gui/style/ScreenStyle;)V", at = @At("TAIL"))
-    private void onInit(CallbackInfo ci) {
+    private void ae2extras$onInit(CallbackInfo ci) {
         
         var screen = (MEStorageScreen<?>) (Object) this;
         if (screen.getMenu() instanceof CraftingTermMenu) {
-            ((AEBaseScreenAccessor) this).invokeAddToLeftToolbar(new AutoInsertButton(this::ae2helpers$onToggleAutoInsert));
+            ((AEBaseScreenAccessor) this).ae2extras$invokeAddToLeftToolbar(new AutoInsertButton(this::ae2helpers$onToggleAutoInsert));
         }
     }
     

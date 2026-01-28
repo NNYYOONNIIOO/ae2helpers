@@ -32,7 +32,7 @@ public abstract class PatternProviderScreenMixin extends AEBaseScreen<PatternPro
     }
     
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void initUpgradePanel(PatternProviderMenu menu, Inventory playerInventory, Component title, ScreenStyle style, CallbackInfo ci) {
+    private void ae2extras$initUpgradePanel(PatternProviderMenu menu, Inventory playerInventory, Component title, ScreenStyle style, CallbackInfo ci) {
         
         // could be this but that breaks with extendedae
 //        this.widgets.add("upgrades", new UpgradesPanel(
@@ -42,7 +42,7 @@ public abstract class PatternProviderScreenMixin extends AEBaseScreen<PatternPro
         
         var existingStyle = style.getWidget("upgrades");
         
-        // inject new style, similar to existing upgrades
+        // inject new style, similar to existing upgrades. Moved lower if appflux is there to avoid overlaps
         if (style instanceof ScreenStyleAccessor accessor) {
             
             WidgetStyle upgradeStyle = existingStyle;

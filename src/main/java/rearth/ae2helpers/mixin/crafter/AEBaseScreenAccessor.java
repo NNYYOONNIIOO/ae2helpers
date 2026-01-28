@@ -8,8 +8,9 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(AEBaseScreen.class)
 public interface AEBaseScreenAccessor {
     
+    @SuppressWarnings("UnusedReturnValue")
     @Invoker("addToLeftToolbar")
-    <B extends Button> B invokeAddToLeftToolbar(B button);
+    <B extends Button> B ae2extras$invokeAddToLeftToolbar(B button);
     
     
 }

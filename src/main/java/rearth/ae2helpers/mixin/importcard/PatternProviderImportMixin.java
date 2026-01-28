@@ -58,7 +58,7 @@ public abstract class PatternProviderImportMixin implements IPatternProviderUpgr
     @Unique private static final int AEHELPERS$MAX_CYCLE_DELAY = 10;
     
     @Inject(method = "<init>(Lappeng/api/networking/IManagedGridNode;Lappeng/helpers/patternprovider/PatternProviderLogicHost;I)V",at = @At("TAIL"))
-    private void initUpgrade(IManagedGridNode mainNode, PatternProviderLogicHost host, int patternInventorySize, CallbackInfo ci) {
+    private void ae2extras$initUpgrade(IManagedGridNode mainNode, PatternProviderLogicHost host, int patternInventorySize, CallbackInfo ci) {
         this.ae2helpers$upgradeSlots = UpgradeInventories.forMachine(ae2helpers.RESULT_IMPORT_CARD, 1, this::saveChanges);
     }
     
@@ -265,7 +265,7 @@ public abstract class PatternProviderImportMixin implements IPatternProviderUpgr
     }
     
     @Inject(method = "addDrops", at = @At("TAIL"))
-    private void dropUpgrade(List<ItemStack> drops, CallbackInfo ci) {
+    private void ae2extras$dropUpgrade(List<ItemStack> drops, CallbackInfo ci) {
         for (var slot : this.ae2helpers$upgradeSlots) {
             if (!slot.isEmpty()) {
                 drops.add(slot);
