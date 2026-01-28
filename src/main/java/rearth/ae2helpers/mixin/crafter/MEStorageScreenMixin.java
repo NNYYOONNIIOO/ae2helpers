@@ -25,7 +25,6 @@ public abstract class MEStorageScreenMixin<C extends MEStorageMenu> {
     
     @Inject(method = "removed", at = @At("HEAD"))
     private void onRemoved(CallbackInfo ci) {
-        System.out.println("Screen removed");
         AutoCraftingWatcher.INSTANCE.onScreenRemoved();
     }
     

@@ -2,24 +2,18 @@ package rearth.ae2helpers;
 
 import appeng.api.ids.AECreativeTabIds;
 import appeng.api.upgrades.Upgrades;
-import appeng.items.materials.UpgradeCardItem;
 import appeng.menu.SlotSemantic;
 import appeng.menu.SlotSemantics;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -61,11 +55,6 @@ public class ae2helpers {
         COMPONENTS.register(modEventBus);
         ITEMS.register(modEventBus);
         
-        // Register ourselves for server and other game events we are interested in.
-        // Note that this is necessary if and only if we want *this* class (ae2helpers) to respond directly to events.
-        // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
-        NeoForge.EVENT_BUS.register(this);
-        
         modEventBus.addListener(this::injectToAETab);
         modEventBus.addListener(this::registerPayloads);
         
@@ -74,19 +63,10 @@ public class ae2helpers {
     }
     
     private void commonSetup(FMLCommonSetupEvent event) {
-        // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
-        
-        if (Config.LOG_DIRT_BLOCK.getAsBoolean()) {
-            LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
-        }
-        
-        LOGGER.info("{}{}", Config.MAGIC_NUMBER_INTRODUCTION.get(), Config.MAGIC_NUMBER.getAsInt());
-        
-        Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
         
         // ideally we'd define the machine(s) as target here, but that then breaks with other mods that add upgrades to the machine
         Upgrades.add(RESULT_IMPORT_CARD.get(), RESULT_IMPORT_CARD, 1, "gui.ae2helpers.import_card");
+        
     }
     
     private void injectToAETab(BuildCreativeModeTabContentsEvent event) {
@@ -109,12 +89,5 @@ public class ae2helpers {
           UpdateImportCardPacket.STREAM_CODEC,
           UpdateImportCardPacket::handle
         );
-    }
-    
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
-    @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event) {
-        // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
     }
 }

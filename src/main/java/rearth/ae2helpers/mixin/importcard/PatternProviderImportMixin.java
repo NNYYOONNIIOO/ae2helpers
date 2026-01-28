@@ -120,8 +120,6 @@ public abstract class PatternProviderImportMixin implements IPatternProviderUpgr
             return;
         }
         
-        ae2helpers.LOGGER.debug("Doing work");
-        
         var config = ae2helpers$getConfig();
         
         // If we are in "Result Only" mode AND have no expectations, we sleep.
@@ -134,7 +132,6 @@ public abstract class PatternProviderImportMixin implements IPatternProviderUpgr
             ae2helpers$cyclesSinceLastCheck = 0;
             
             var didWork = ae2helpers$doImportWork(config);
-            ae2helpers.LOGGER.debug("Import Success: {}", didWork);
             
             if (didWork) {
                 ae2helpers$currentCycleDelay = 1;

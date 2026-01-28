@@ -59,7 +59,6 @@ public class AutoCraftingWatcher {
         this.active = false;
         this.startDelay = 0;
         this.screenOpened = false;
-        ae2helpers.LOGGER.info("Cleared screen");
     }
     
     public void onTick(MEStorageScreen<?> screen) {
@@ -75,7 +74,6 @@ public class AutoCraftingWatcher {
         
         if (startDelay > 0) {
             startDelay--;
-            ae2helpers.LOGGER.info("Skipping " + startDelay);
             return; // Wait for AE2 to finish its native moves
         }
         
@@ -90,8 +88,6 @@ public class AutoCraftingWatcher {
             var entry = it.next();
             int slotIndex = entry.getKey();
             Ingredient ingredient = entry.getValue();
-            
-            // ae2helpers.LOGGER.debug("Trying to fill slot: " + slotIndex + " with: " + ingredient.getItems()[0]);
             
             // if slot has been filled otherwise (e.g. by user)
             if (craftingSlots.get(slotIndex).hasItem()) {
@@ -114,7 +110,7 @@ public class AutoCraftingWatcher {
             // move found ingredient to slot
             if (bestMatch != null) {
                 
-                ae2helpers.LOGGER.info("Found match for slot " + slotIndex + ": " + bestMatch.wrapForDisplayOrFilter());
+                ae2helpers.LOGGER.debug("Found match for slot " + slotIndex + ": " + bestMatch.wrapForDisplayOrFilter());
                 
                 // Send packet to server
                 PacketDistributor.sendToServer(new FillCraftingSlotPacket(slotIndex, bestMatch));

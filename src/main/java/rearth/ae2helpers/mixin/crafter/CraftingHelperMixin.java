@@ -10,10 +10,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import rearth.ae2helpers.ae2helpers;
 import rearth.ae2helpers.client.AutoCraftingWatcher;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 @Mixin(value = CraftingHelper.class, remap = false)
@@ -37,7 +35,6 @@ public class CraftingHelperMixin {
             if (!missingResult.craftableSlots().isEmpty()) {
                 for (var missing : missingResult.craftableSlots()) {
                     var ingredient = slotToIngredientMap.get(missing);
-                    ae2helpers.LOGGER.info("mis: " + missing + " | " + Arrays.stream(ingredient.getItems()).findFirst());
                     AutoCraftingWatcher.INSTANCE.setPending(
                       slotToIngredientMap,
                       missingResult.craftableSlots()

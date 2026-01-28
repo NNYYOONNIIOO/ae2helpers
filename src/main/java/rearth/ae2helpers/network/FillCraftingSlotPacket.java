@@ -2,7 +2,6 @@ package rearth.ae2helpers.network;
 
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.AEKey;
-import appeng.api.stacks.GenericStack;
 import appeng.api.storage.StorageHelper;
 import appeng.menu.SlotSemantics;
 import appeng.menu.me.items.CraftingTermMenu;
@@ -12,7 +11,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
@@ -58,7 +56,6 @@ public record FillCraftingSlotPacket(int slotIndex, AEKey what) implements Custo
                     ItemStack stack = itemKey.toStack((int) extracted);
                     targetSlot.set(stack);
                     menu.broadcastChanges();
-                    System.out.println("Filled slot!");
                 } else {
                     ae2helpers.LOGGER.warn("Unable to extract from host for slot movement: " + payload.what);
                 }
