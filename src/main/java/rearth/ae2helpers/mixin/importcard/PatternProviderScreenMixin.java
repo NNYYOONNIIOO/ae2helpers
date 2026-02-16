@@ -46,7 +46,7 @@ public abstract class PatternProviderScreenMixin extends AEBaseScreen<PatternPro
         if (style instanceof ScreenStyleAccessor accessor) {
             
             WidgetStyle upgradeStyle = existingStyle;
-            if (ModList.get().isLoaded("appflux")) {
+            if (ModList.get().isLoaded("appflux") || ModList.get().isLoaded("mesoulcard")) {
                 upgradeStyle = new WidgetStyle();
                 upgradeStyle.setLeft(existingStyle.getLeft());
                 upgradeStyle.setRight(existingStyle.getRight());
